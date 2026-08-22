@@ -3,7 +3,7 @@
 [![Live Demo](https://img.shields.io/badge/Streamlit-Live%20Demo-FF4B4B?style=for-the-badge&logo=streamlit)](HTTPS://YOUR-APP-LINK.STREAMLIT.APP)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
 
-**Author:** [Your Full Name]
+**Author:** Riccardo Amorelli 
 **Focus:** Quantitative Finance, Stochastic Calculus, High-Performance Computing
 
 ---
