@@ -1,0 +1,20 @@
+import numpy as np
+from src.monte_carlo import simulate_gbm_paths
+
+def test_simulate_gbm_paths_returns_valid_outputs():
+    mc_price, se, ci, paths = simulate_gbm_paths(
+        S0=100,
+        K=100,
+        r=0.05,
+        sigma=0.2,
+        T=1.0,
+        N=1000,
+        M=50,
+        use_antithetic=True,
+        option_type="call"
+    )
+
+    assert np.isfinite(mc_price)
+    assert np.isfinite(se)
+    assert len(ci) == 2
+    assert len(paths) == 1000
