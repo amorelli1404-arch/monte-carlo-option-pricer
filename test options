@@ -1,0 +1,74 @@
+import numpy as np
+
+from src.black_scholes import black_scholes_price
+from src.monte_carlo import simulate_gbm_paths
+
+
+def test_black_scholes_call_price():
+    S0 = 100.0
+    K = 100.0
+    r = 0.05
+    sigma = 0.20
+    T = 1.0
+
+    price = black_scholes_price(S0, K, r, sigma, T, "call")
+
+    assert np.isfinite(price)
+    assert price > 0
+    assert abs(price - 10.4506) < 0.5
+
+
+def test_black_scholes_put_price():
+    S0 = 100.0
+    K = 100.0
+    r = 0.05
+    sigma = 0.20
+    T = 1.0
+
+    price = black_scholes_price(S0, K, r, sigma, T, "put")
+
+    assert np.isfinite(price)
+    assert price > 0
+
+
+def test_monte_carlo_call_price_is_reasonable():
+    np.random.seed(42)
+
+    S0 = 100.0
+    K = 100.0
+    r = 0.05
+    sigma = 0.20
+    T = 1.0
+    N = 20000
+    M = 100
+
+    mc_price, se, ci, terminal_prices = simulate_gbm_paths(
+        S0, K, r, sigma, T, N, M, use_antithetic=True, option_type="call"
+    )
+
+    bs_price = black_scholes_price(S0, K, r, sigma, T, "call")
+
+    assert np.isfinite(mc_price)
+    assert np.isfinite(se)
+    assert len(ci) == 2
+    assert len(terminal_prices) == N
+    assert abs(mc_price - bs_price) < 2.0
+
+
+def test_monte_carlo_put_price_is_reasonable():
+    np.random.seed(7)
+
+    S0 = 100.0
+    K = 100.0
+    r = 0.05
+    sigma = 0.20
+    T = 1.0
+    N = 20000
+    M = 100
+
+    mc_price, _, _, _ = simulate_gbm_paths(
+        S0, K, r, sigma, T, N, M, use_antithetic=True, option_type="put"
+    )
+
+    assert np.isfinite(mc_price)
+    assert mc_price > 0
